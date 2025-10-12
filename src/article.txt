@@ -1,0 +1,28 @@
+I've posted or presented on a number of AI topics over the last few years from training a computer vision model 
+to detect an open baby gate, to a job recruiting agent with facial recognition, to my most recent post on clustering
+political opinions.  In short, I've done a lot of work with technology that leverages neural networks in some form or another.
+But if you were to have asked me to explain in detail how a neural net works, I would have been a deer in headlights.
+I finally decided to scratch that itch, and challenged myself to build a simple neural network from scratch, using only typescript.
+No external packages that do the heavy lifting.  I won't say that I am now an expert in neural nets, but I finally feel like I understand
+what is happening under the hood.  
+
+Harkening back to my teaching days, I'll borrow from the old addage that the best way to learn something is to teach it.
+
+The Plan
+Build and train a simple neural network that can detect face from a 10 by 10 pixel image, using only Typescript (and a few Node utilities for working with csv's).
+
+Neural Networks from 10,000 Feet
+
+Node
+The building blocks of a neural network.  A node contains one to many Weights, which can be thought of as an array of numbers.
+These numbers start out random but will change as our node is trained.  Getting these weights right will be critical to building a network
+that can accurately detect a face.
+
+Example weights
+[0.1, -0.23, 0.5, -0.8, ...]
+
+Inputs
+Nodes can make a prediction by applying their weights to an equally sized group of external inputs.
+
+Layer
+A group of nodes that process the same inputs. Each node in a layer will 
