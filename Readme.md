@@ -90,23 +90,9 @@ The neural network learns to classify 10x10 pixel face images as either:
 
 ### Dataset Details
 - **Input**: 100 features (10x10 pixel grid)
-- **Training Data**: 101 samples
-- **Test Data**: 101 samples
+- **Training Data**: 100 samples
+- **Test Data**: 100 samples
 - **Features**: Binary values (0 or 1)
-
-### Sample Face Pattern
-```
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0
-```
 
 ## 🔧 Key Components
 
@@ -147,14 +133,6 @@ After exploring this codebase, you'll understand:
 - `training_example.md` - Detailed walkthrough of a single training step
 - `visualizations/` - Interactive data visualization tools
 - `NeuralNetwork.md` - In-depth technical documentation
-
-## 🤝 Contributing
-
-This is an educational project. Feel free to:
-- Add more test cases
-- Implement additional activation functions
-- Create new visualization tools
-- Improve documentation
 
 ## 📄 License
 
