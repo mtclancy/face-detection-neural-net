@@ -27,7 +27,7 @@ export class Neuron {
       if (inputs.length !== this.weights.length) {
         throw new Error("Input size must match weight size");
       }
-      let output = 0;
+      let output = this.bias;
       for (let i = 0; i < inputs.length; i++) {
         output += inputs[i]! * this.weights[i]!;
       }
