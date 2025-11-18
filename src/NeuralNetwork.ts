@@ -14,24 +14,9 @@ interface TestResults {
 
 export class NeuralNetwork {
   private layers: Neuron[][];
-  private learningRate: number;
-
-  constructor(layerSizes: number[], inputSize: number, learningRate = 0.1) {
-    this.learningRate = learningRate;
-    this.layers = [];
-    
-    // Create layers
-    for (let i = 0; i < layerSizes.length; i++) {
-      const layer: Neuron[] = [];
-      // First layer gets the actual input size, subsequent layers get previous layer size
-      const numInputs = i === 0 ? inputSize : layerSizes[i - 1]!;
-      const numNeurons = layerSizes[i]!;
-      
-      for (let j = 0; j < numNeurons; j++) {
-        layer.push(new Neuron(numInputs, learningRate));
-      }
-      this.layers.push(layer);
-    }
+  
+  constructor(_layers: Neuron[][]) {
+    this.layers = _layers
   }
 
   // Forward pass through the entire network.  Output [[layer1_output], [layer2_output], ...]
@@ -118,12 +103,12 @@ export class NeuralNetwork {
         // Update each weight connecting to this neuron
         for (let inputIndex = 0; inputIndex < currentNeuron.weights.length; inputIndex++) {
           const inputValue = currentLayerInputs[inputIndex]!;
-          const weightUpdate = this.learningRate * weightAdjustment * inputValue;
+          const weightUpdate = currentNeuron.learningRate * weightAdjustment * inputValue;
           currentNeuron.weights[inputIndex]! += weightUpdate;
         }
         
         // Update bias (bias is like a weight with input always = 1)
-        const biasUpdate = this.learningRate * weightAdjustment;
+        const biasUpdate = currentNeuron.learningRate * weightAdjustment;
         currentNeuron.bias += biasUpdate;
       }
       

@@ -2,6 +2,7 @@ import { NeuralNetwork } from '../src/NeuralNetwork';
 import { Neuron } from '../src/Neuron';
 import { TrainingData } from '../src/types';
 import { getTrainingData, getTestData } from '../src/data-utils';
+import { buildLayer } from '../src/network-builder';
 
 describe('Single Neuron', () => {
     it('should forward input through untrained neuron', () => {
@@ -78,17 +79,19 @@ describe('Single Neuron', () => {
 });
 
 describe('NeuralNet', () => {
-  it('should be defined', () => {
+  it('Test accuracy should be greater than 95', () => {
     const trainingData = getTrainingData();
-    const neuralNet = new NeuralNetwork([10, 3, 1], 100, 0.1);
-    const result = neuralNet.trainOnDataset(trainingData, 10);
-    expect(result).toBeDefined();
-    expect(result.length).toBe(10);
-    expect(neuralNet).toBeDefined();
 
+    const layerOne = buildLayer(10, 100, 0.1);
+    const layerTwo = buildLayer(3, 10, 0.1);
+    const layerThree = buildLayer(1, 3, 0.1);
+
+    const neuralNet = new NeuralNetwork([layerOne, layerTwo, layerThree]);
+    neuralNet.trainOnDataset(trainingData, 10);
+   
     const testData = getTestData();
     const testResults = neuralNet.test(testData);
-    expect(testResults).toBeDefined();
-    expect(testResults.accuracy).toBeGreaterThan(0);
+
+    expect(testResults.accuracy).toBeGreaterThan(95);
   });
 });
