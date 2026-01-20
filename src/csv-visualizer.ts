@@ -73,14 +73,15 @@ export class CSVGridVisualizer {
   /**
    * Generate HTML visualization
    */
-  private generateHTML(grids: GridData[]): string {
+  private generateHTML(grids: GridData[], datasetType: string = ''): string {
+    const title = datasetType ? `Face Dataset ${datasetType} Visualization` : 'Face Dataset Visualization';
     const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Dataset Visualization</title>
+    <title>${title}</title>
     <style>
         body {
             font-family: 'Courier New', monospace;
@@ -158,7 +159,7 @@ export class CSVGridVisualizer {
 </head>
 <body>
     <div class="container">
-        <h1>Face Dataset Visualization</h1>
+        <h1>${title}</h1>
         
         <div class="stats">
             <h2>Dataset Statistics</h2>
@@ -239,17 +240,24 @@ export class CSVGridVisualizer {
     console.log(`Faces: ${grids.filter(g => g.label === 1).length}`);
     console.log(`Non-Faces: ${grids.filter(g => g.label === 0).length}`);
     
+    // Determine output filename based on CSV filename
+    const csvBasename = path.basename(this.csvPath, '.csv');
+    const isTest = csvBasename.includes('TEST');
+    const isTrain = csvBasename.includes('TRAIN');
+    const datasetType = isTest ? 'TEST' : isTrain ? 'TRAIN' : '';
+    const outputPrefix = datasetType ? `face_dataset_${datasetType.toLowerCase()}_visualization` : 'face_dataset_visualization';
+    
     // Generate HTML visualization
     console.log('Generating HTML visualization...');
-    const html = this.generateHTML(grids);
-    const htmlPath = path.join(this.outputDir, 'face_dataset_visualization.html');
+    const html = this.generateHTML(grids, datasetType);
+    const htmlPath = path.join(this.outputDir, `${outputPrefix}.html`);
     fs.writeFileSync(htmlPath, html);
     console.log(`HTML visualization saved to: ${htmlPath}`);
     
     // Generate text file
     console.log('Generating text visualization...');
     const text = this.generateTextFile(grids);
-    const textPath = path.join(this.outputDir, 'face_dataset_visualization.txt');
+    const textPath = path.join(this.outputDir, `${outputPrefix}.txt`);
     fs.writeFileSync(textPath, text);
     console.log(`Text visualization saved to: ${textPath}`);
     
@@ -262,7 +270,8 @@ export class CSVGridVisualizer {
     
     // Save first 10 examples as individual files
     grids.slice(0, 10).forEach(grid => {
-      const filename = `grid_${grid.rowIndex}_${grid.label === 1 ? 'face' : 'nonface'}.txt`;
+      const prefix = datasetType ? `${datasetType.toLowerCase()}_` : '';
+      const filename = `${prefix}grid_${grid.rowIndex}_${grid.label === 1 ? 'face' : 'nonface'}.txt`;
       const filepath = path.join(examplesDir, filename);
       const content = `Row ${grid.rowIndex} - ${grid.label === 1 ? 'FACE' : 'NON-FACE'}\n\n${this.gridToASCII(grid.grid)}`;
       fs.writeFileSync(filepath, content);
