@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Neuron } from '../Neuron';
 import { getTrainingData, getTestData } from '../data-utils';
 import type { TrainingData, TestResults } from '../types';
-import { InputVisualizer } from './InputVisualizer';
+import { CurrentState } from './CurrentState';
+import { PredictionDisplay } from './PredictionDisplay';
 import { NeuronDetailView } from './NeuronDetailView';
 import { TrainingStepView, type TrainingStepDetails } from './TrainingStepView';
 import { ResultsDisplay } from './ResultsDisplay';
@@ -135,99 +136,99 @@ export const SingleNeuronPage: React.FC = () => {
       </header>
 
       <div className="single-neuron-content">
-        <div className="left-panel">
-          <InputVisualizer 
-            data={currentSample}
-            prediction={getCurrentPrediction()}
-            title="Current Sample"
-          />
+        <CurrentState 
+          currentSample={currentSample}
+          neuron={neuron}
+        />
 
-          <div className="sample-navigation">
-            <button onClick={handlePreviousSample} disabled={trainingData.length === 0}>
-              ← Previous
+        <PredictionDisplay 
+          prediction={getCurrentPrediction()}
+          title="Prediction"
+        />
+
+        <NeuronDetailView 
+          neuron={neuron}
+          currentSample={currentSample}
+          weightsBefore={weightsBefore}
+          biasBefore={biasBefore}
+        />
+
+        <TrainingStepView
+          neuron={neuron}
+          currentSample={currentSample}
+          onTrainStep={handleTrainingStep}
+          weightsBefore={weightsBefore}
+          biasBefore={biasBefore}
+        />
+
+        <div className="training-controls-panel">
+          <h3>Training Controls</h3>
+          <div className="controls">
+            <div className="control-group">
+              <label>
+                Epochs:
+                <input
+                  type="number"
+                  value={epochs}
+                  onChange={(e) => setEpochs(parseInt(e.target.value) || 10)}
+                  min="1"
+                  max="100"
+                  disabled={isTraining}
+                />
+              </label>
+            </div>
+            <button 
+              onClick={handleTrain} 
+              disabled={!neuron || isTraining || trainingData.length === 0}
+              className="train-button"
+            >
+              {isTraining ? `Training... (${currentEpoch}/${epochs})` : 'Train Neuron'}
             </button>
-            <span>Sample {sampleIndex + 1} of {trainingData.length}</span>
-            <button onClick={handleNextSample} disabled={trainingData.length === 0}>
-              Next →
+            <button
+              onClick={handleTest}
+              disabled={!neuron || isTraining}
+              className="test-button"
+            >
+              Run Test
             </button>
           </div>
-
-          <NeuronDetailView 
-            neuron={neuron}
-            currentSample={currentSample}
-            weightsBefore={weightsBefore}
-            biasBefore={biasBefore}
-          />
         </div>
 
-        <div className="right-panel">
-          <div className="training-controls-panel">
-            <h3>Training Controls</h3>
-            <div className="controls">
-              <div className="control-group">
-                <label>
-                  Epochs:
-                  <input
-                    type="number"
-                    value={epochs}
-                    onChange={(e) => setEpochs(parseInt(e.target.value) || 10)}
-                    min="1"
-                    max="100"
-                    disabled={isTraining}
-                  />
-                </label>
+        {trainingHistory.length > 0 && (
+          <div className="training-history">
+            <h3>Training History</h3>
+            <div className="history-stats">
+              <div className="history-item">
+                <span className="history-label">Training Steps:</span>
+                <span className="history-value">{trainingHistory.length}</span>
               </div>
-              <button 
-                onClick={handleTrain} 
-                disabled={!neuron || isTraining || trainingData.length === 0}
-                className="train-button"
-              >
-                {isTraining ? `Training... (${currentEpoch}/${epochs})` : 'Train Neuron'}
-              </button>
-              <button
-                onClick={handleTest}
-                disabled={!neuron || isTraining}
-                className="test-button"
-              >
-                Run Test
-              </button>
+              <div className="history-item">
+                <span className="history-label">Latest Error:</span>
+                <span className="history-value">
+                  {Math.abs(trainingHistory[trainingHistory.length - 1]?.error || 0).toFixed(4)}
+                </span>
+              </div>
+              <div className="history-item">
+                <span className="history-label">Latest Output:</span>
+                <span className="history-value">
+                  {trainingHistory[trainingHistory.length - 1]?.output.toFixed(4) || 'N/A'}
+                </span>
+              </div>
             </div>
           </div>
+        )}
 
-          <TrainingStepView
-            neuron={neuron}
-            currentSample={currentSample}
-            onTrainStep={handleTrainingStep}
-            weightsBefore={weightsBefore}
-            biasBefore={biasBefore}
-          />
+        <ResultsDisplay results={testResults} />
+      </div>
 
-          {trainingHistory.length > 0 && (
-            <div className="training-history">
-              <h3>Training History</h3>
-              <div className="history-stats">
-                <div className="history-item">
-                  <span className="history-label">Training Steps:</span>
-                  <span className="history-value">{trainingHistory.length}</span>
-                </div>
-                <div className="history-item">
-                  <span className="history-label">Latest Error:</span>
-                  <span className="history-value">
-                    {Math.abs(trainingHistory[trainingHistory.length - 1]?.error || 0).toFixed(4)}
-                  </span>
-                </div>
-                <div className="history-item">
-                  <span className="history-label">Latest Output:</span>
-                  <span className="history-value">
-                    {trainingHistory[trainingHistory.length - 1]?.output.toFixed(4) || 'N/A'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <ResultsDisplay results={testResults} />
-        </div>
+      <div className="sample-navigation">
+        <button onClick={handlePreviousSample} disabled={trainingData.length === 0}>
+          ← Previous
+        </button>
+        <span>Sample {sampleIndex + 1} of {trainingData.length}</span>
+        <button onClick={handleNextSample} disabled={trainingData.length === 0}>
+          Next →
+        </button>
       </div>
     </div>
   );

@@ -83,7 +83,7 @@ export const NeuronDetailView: React.FC<NeuronDetailViewProps> = ({
 
   return (
     <div className="neuron-detail-view">
-      <h3>Neuron Internal State</h3>
+      <h3>Prediction Mechanics</h3>
       
       <div className="neuron-stats">
         <div className="stat-item">
@@ -117,9 +117,17 @@ export const NeuronDetailView: React.FC<NeuronDetailViewProps> = ({
                       className="pixel"
                       style={{
                         backgroundColor: pixel === 1 ? '#000' : '#fff',
-                        border: '1px solid #ccc'
+                        border: '1px solid #ccc',
+                        color: pixel === 1 ? '#fff' : '#000',
+                        fontSize: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 'bold'
                       }}
-                    />
+                    >
+                      {pixel}
+                    </div>
                   ))}
                 </div>
               ))}

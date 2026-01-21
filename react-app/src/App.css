@@ -193,6 +193,90 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Weights Heat Map */
+.weights-heatmap {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.weights-heatmap h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Current State */
+.current-state {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.current-state h3 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.current-state-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.current-state-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.current-state-item h4 {
+  margin-bottom: 15px;
+  color: #667eea;
+  font-size: 1.1em;
+}
+
+@media (max-width: 900px) {
+  .current-state-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Prediction Display */
+.prediction-display {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.prediction-display h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.prediction-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prediction-value {
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.prediction-value strong {
+  color: #667eea;
+  font-size: 1.2em;
+}
+
 .input-visualizer h3 {
   margin-bottom: 15px;
   color: #333;
@@ -251,13 +335,17 @@ body {
 }
 
 .sample-navigation {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 20px;
 }
 
 .sample-navigation button {
@@ -548,9 +636,12 @@ body {
 }
 
 .single-neuron-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 /* Neuron Detail View */
@@ -925,10 +1016,6 @@ body {
 }
 
 @media (max-width: 1200px) {
-  .single-neuron-content {
-    grid-template-columns: 1fr;
-  }
-
   .weights-comparison {
     grid-template-columns: 1fr;
   }
